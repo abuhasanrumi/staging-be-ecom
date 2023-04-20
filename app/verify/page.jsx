@@ -3,18 +3,25 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/globals.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verifyEmail } from "../redux/authSlice";
 
 const page = () => {
   const [otp, setOtp] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleSubmit = () => {
-    dispatch(verifyEmail({ otp, email }));
-    router.push("/");
+  const storeEmail = useSelector((state) => state.auth.email);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const verify = await dispatch(verifyEmail({ otp, email: storeEmail }));
+    if (verify.payload.success) {
+      router.push("/home");
+    } else {
+      alert("Authentication failed");
+    }
   };
 
   return (
@@ -22,7 +29,7 @@ const page = () => {
       <div>
         <h1 className="title">Verify</h1>
         <form onSubmit={handleSubmit}>
-          <input
+          {/* <input
             type="text"
             name="email"
             value={email}
@@ -30,7 +37,7 @@ const page = () => {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
-          />
+          /> */}
           <input
             type="text"
             name="otp"

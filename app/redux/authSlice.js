@@ -3,11 +3,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-    message: "",
-    user: "",
+    email: "",
     token: "",
     loading: false,
-    error: ""
+    error: false
 }
 
 export const signUpUser = createAsyncThunk('sign-up', async (body) => {
@@ -50,7 +49,6 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         addToken: (state, action) => {
-            console.log(state.token)
             state.token = localStorage.getItem("token")
         },
         logout: (state, action) => {
@@ -64,43 +62,45 @@ export const authSlice = createSlice({
         },
         [loginUser.fulfilled]: (state, { payload: { token } }) => {
             state.loading = false;
-
             state.token = token;
 
             localStorage.setItem('token', token)
         },
         [loginUser.rejected]: (state, action) => {
-            state.loading = true
+            state.loading = false
+            state.error = true
         },
         [verifyEmail.pending]: (state, action) => {
             state.loading = true
         },
-        [verifyEmail.fulfilled]: (state, { payload: { error, message, success, token } }) => {
+        [verifyEmail.fulfilled]: (state, action) => {
             state.loading = false;
-            if (error && success) {
-                state.error = error
+            if (action.payload.success) {
+                state.token = action.payload.token;
+                localStorage.setItem('token', action.payload.token)
             } else {
-                state.token = token;
-
-                localStorage.setItem('token', token)
+                state.error = true
             }
         },
         [verifyEmail.rejected]: (state, action) => {
-            state.loading = true
+            state.loading = false
         },
         [signUpUser.pending]: (state, action) => {
-            state.loading = true
+            state.loading = true;
+
         },
-        [signUpUser.fulfilled]: (state, { payload: { error, message } }) => {
+        [signUpUser.fulfilled]: (state, action) => {
             state.loading = false;
-            if (error) {
-                state.error = error
+            if (action.payload.isOtpSend === true) {
+                state.email = action.payload.email
             } else {
-                state.message = message
+                state.error = true
             }
+
         },
         [signUpUser.rejected]: (state, action) => {
-            state.loading = true
+            state.loading = false
+            state.error = true
         }
     }
 })

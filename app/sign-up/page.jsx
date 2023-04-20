@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/globals.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../redux/authSlice";
 
 const page = () => {
@@ -15,8 +15,13 @@ const page = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await dispatch(signUpUser({ name, email, password }));
-    router.push("/verify");
+    const signup = await dispatch(signUpUser({ name, email, password }));
+    // console.log(signup.payload);
+    if (signup.payload.isOtpSend == true) {
+      router.push("/verify");
+    } else {
+      alert("Please try again with correct email");
+    }
   };
 
   return (
