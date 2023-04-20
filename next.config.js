@@ -1,6 +1,9 @@
-/** @type {import('next').NextConfig} */
+import('next').NextConfig
+
+
 const nextConfig = {
   experimental: {
+    pagesDir: 'pages',
     appDir: true,
   },
 }

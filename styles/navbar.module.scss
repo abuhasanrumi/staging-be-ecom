@@ -1,0 +1,27 @@
+.logo {
+  font-size: 28px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.navbar {
+  padding: 30px;
+  background-color: #16a085;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbarUl {
+  list-style-type: none;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.navbarUl a {
+  text-decoration: none;
+  color: white;
+}
