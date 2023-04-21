@@ -93,7 +93,7 @@ export const authSlice = createSlice({
         },
         [loginUser.fulfilled]: (state, action) => {
             const token = action.payload.token
-            const tokenWithoutBearer = token.replace("Bearer ", "");
+            const tokenWithoutBearer = token?.replace("Bearer ", "");
             state.loading = false;
             state.token = tokenWithoutBearer;
 
@@ -110,10 +110,10 @@ export const authSlice = createSlice({
             state.loading = false;
             if (action.payload.success) {
                 const token = action.payload.token
-                const tokenWithoutBearer = token.replace("Bearer ", "");
+                const tokenWithoutBearer = token?.replace("Bearer ", "");
                 state.token = tokenWithoutBearer;
                 localStorage.setItem('token', tokenWithoutBearer)
-                res.cookie('token', tokenWithoutBearer, { httpOnly: true });
+                // res.cookie('token', tokenWithoutBearer, { httpOnly: true });
             } else {
                 state.error = true
             }

@@ -41,14 +41,13 @@ const page = () => {
   };
 
   const token = useSelector((state) => state.auth.token);
-  const decodedToken = jwt.decode(token);
-  const { email, _id } = decodedToken;
+//   const { email, _id } = jwt.decode(token);
 
   return (
     <div className="profile-wrapper">
       <div>
         <h1 className="title">Profile</h1>
-        <h2>Email: {email}</h2>
+        <h2>Email: {}</h2>
         <br />
         <div className={profileStyle.changePassSection}>
           <h3>Change Password</h3>

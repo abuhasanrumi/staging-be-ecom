@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
     // dispatch(logout());
     localStorage.clear();
     router.push("/");
+    window.location.reload();
   };
   return (
     <html lang="en">
