@@ -5,23 +5,23 @@ import "../styles/globals.scss";
 import navStyle from "../styles/navbar.module.scss";
 import React from "react";
 import { Providers } from "./redux/provider";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import store from "@/store";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
   // const email = useSelector((state) => state.auth.email);
-  const email = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
   // const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleClick = () => {
     // dispatch(logout());
     localStorage.clear();
-    window.location.reload();
+    router.push("/");
   };
   return (
     <html lang="en">
-      <Provider store={store}>
-        <body>
+      <body>
+        <Providers>
           <div className="container">
             {/* nav area */}
             <nav className={navStyle.navbar}>
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
                 <Link href="/">
                   <li className="navbar-items">Home</li>
                 </Link>
-                {email ? (
+                {token ? (
                   <Link href="/profile">
                     <li className="navbar-items">Profile</li>
                   </Link>
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
                     <li className="navbar-items">Sign up</li>
                   </Link>
                 )}
-                {email ? (
+                {token ? (
                   <Link href="" onClick={handleClick}>
                     <li className="navbar-items">Logout</li>
                   </Link>
@@ -50,11 +50,10 @@ export default function RootLayout({ children }) {
                 )}
               </ul>
             </nav>
-
             {children}
           </div>
-        </body>
-      </Provider>
+        </Providers>
+      </body>
     </html>
   );
 }

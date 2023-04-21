@@ -1,6 +1,7 @@
 'use client'
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
 
 const initialState = {
     name: localStorage.getItem("name") || "",
@@ -33,8 +34,20 @@ export const verifyEmail = createAsyncThunk('verify', async (body) => {
 })
 
 export const loginUser = createAsyncThunk('login', async (body) => {
+    // const dispatch = useDispatch()
     const res = await fetch("https://staging-be-ecom.techserve4u.com/api/user/signin", {
         method: "post",
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+    return await res.json()
+})
+
+export const changePass = createAsyncThunk('changePass', async (body) => {
+    const res = await fetch("https://staging-be-ecom.techserve4u.com/api/user/changePassword", {
+        method: "put",
         headers: {
             'Content-Type': "application/json"
         },
@@ -58,6 +71,23 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: {
+        [changePass.pending]: (state, action) => {
+            state.loading = true
+        },
+        [changePass.fulfilled]: (state, action) => {
+            console.log(success)
+            // const token = action.payload.token
+            // const tokenWithoutBearer = token.replace("Bearer ", "");
+            // state.loading = false;
+            // state.token = tokenWithoutBearer;
+            // res.cookie('token', tokenWithoutBearer, { httpOnly: true });
+
+            // localStorage.setItem('token', tokenWithoutBearer)
+        },
+        [changePass.rejected]: (state, action) => {
+            state.loading = false
+            state.error = true
+        },
         [loginUser.pending]: (state, action) => {
             state.loading = true
         },
@@ -83,6 +113,7 @@ export const authSlice = createSlice({
                 const tokenWithoutBearer = token.replace("Bearer ", "");
                 state.token = tokenWithoutBearer;
                 localStorage.setItem('token', tokenWithoutBearer)
+                res.cookie('token', tokenWithoutBearer, { httpOnly: true });
             } else {
                 state.error = true
             }

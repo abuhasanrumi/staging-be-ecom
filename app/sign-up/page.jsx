@@ -16,7 +16,6 @@ const page = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const signup = await dispatch(signUpUser({ name, email, password }));
-    // console.log(signup.payload);
     if (signup.payload.isOtpSend == true) {
       router.push("/verify");
     } else {
