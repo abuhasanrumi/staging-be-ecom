@@ -3,8 +3,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-    email: "",
-    token: "",
+    email: localStorage.getItem("email") || "",
+    token: localStorage.getItem("token") || "",
     loading: false,
     error: false
 }
@@ -60,11 +60,13 @@ export const authSlice = createSlice({
         [loginUser.pending]: (state, action) => {
             state.loading = true
         },
-        [loginUser.fulfilled]: (state, { payload: { token } }) => {
+        [loginUser.fulfilled]: (state, action) => {
+            const token = action.payload.token
+            const tokenWithoutBearer = token.replace("Bearer ", "");
             state.loading = false;
-            state.token = token;
+            state.token = tokenWithoutBearer;
 
-            localStorage.setItem('token', token)
+            localStorage.setItem('token', tokenWithoutBearer)
         },
         [loginUser.rejected]: (state, action) => {
             state.loading = false
@@ -76,8 +78,10 @@ export const authSlice = createSlice({
         [verifyEmail.fulfilled]: (state, action) => {
             state.loading = false;
             if (action.payload.success) {
-                state.token = action.payload.token;
-                localStorage.setItem('token', action.payload.token)
+                const token = action.payload.token
+                const tokenWithoutBearer = token.replace("Bearer ", "");
+                state.token = tokenWithoutBearer;
+                localStorage.setItem('token', tokenWithoutBearer)
             } else {
                 state.error = true
             }
@@ -93,6 +97,7 @@ export const authSlice = createSlice({
             state.loading = false;
             if (action.payload.isOtpSend === true) {
                 state.email = action.payload.email
+                localStorage.setItem('email', action.payload.email)
             } else {
                 state.error = true
             }
