@@ -18,7 +18,7 @@ const page = () => {
     event.preventDefault();
     const verify = await dispatch(verifyEmail({ otp, email: storeEmail }));
     if (verify.payload.success) {
-      router.push("/home");
+      router.push("/profile");
     } else {
       alert("Authentication failed");
     }

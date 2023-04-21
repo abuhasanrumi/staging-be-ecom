@@ -16,7 +16,7 @@ const page = () => {
     event.preventDefault();
     const login = await dispatch(loginUser({ email, password }));
     if (login.payload.token) {
-      router.push("/home");
+      router.push("/profile");
     } else {
       alert("Authentication failed");
     }

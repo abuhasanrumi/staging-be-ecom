@@ -3,6 +3,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
+    name: localStorage.getItem("name") || "",
     email: localStorage.getItem("email") || "",
     token: localStorage.getItem("token") || "",
     loading: false,
