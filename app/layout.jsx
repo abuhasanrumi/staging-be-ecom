@@ -7,7 +7,7 @@ import React from "react";
 import { Providers } from "./redux/provider";
 import { useRouter } from "next/navigation";
 
-export default function RootLayout({ children }) {
+const RootLayout = ({ children }) => {
   // const email = useSelector((state) => state.auth.email);
   const token = localStorage.getItem("token");
   // const dispatch = useDispatch();
@@ -57,4 +57,6 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

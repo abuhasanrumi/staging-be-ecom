@@ -1,9 +1,8 @@
 'use client'
-
+import React from 'react'
 import { useSelector } from 'react-redux';
 
-
-export default function Home() {
+const Home = () => {
   const token = useSelector(state => state.auth.token)
   return (
     <main>
@@ -15,3 +14,9 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home
+
+
+
+
